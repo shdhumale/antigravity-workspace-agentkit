@@ -1,0 +1,29 @@
+# [Goal Description]
+Document the sequential workflow for handling Bugs, Defects, and Performance Issues in the Ticket Management System, tailored for the HTML/JS architecture defined in PRD.txt.
+
+## Proposed Workflow Sequence
+
+### 1. Discovery & Reproduction
+- **Symptom Analysis**: Review user reports or observed behavior.
+- **Reproduce**: Establish a consistent reproduction path.
+- **Tools**: Use `browser-automation` to script reproduction steps.
+
+### 2. Systematic Debugging (RCA)
+- **Activate `/debug`**: Enter the debugging context.
+- **Skill Usage**: Apply `@[skills/systematic-debugging]` and `@[skills/phase-gated-debugging]`.
+- **Logic Validation**: Check `localStorage` interactions and state updates in `vanilla JavaScript`.
+
+### 3. Performance Profiling
+- **Identify Bottlenecks**: Use `@[skills/performance-profiling]` to find slow DOM updates or expensive search operations.
+- **Constraint Check**: Ensure compliance with the single-browser/client-side only constraint from PRD.
+
+### 4. Implementation & Validation
+- **Fix Application**: Apply changes using `@[skills/debugger]` or `@[skills/performance-optimizer]`.
+- **Test Generation**: Create/Update tests using `@[skills/webapp-testing]`.
+- **Final Audit**: Execute `python .agent/scripts/checklist.py .` to ensure production readiness.
+
+## Verification Plan
+### Automated Tests
+- Run `npm test` or specific Playwright tests to verify the fix.
+### Manual Verification
+- Manually trigger the reproduction path in the browser and verify the fix.
