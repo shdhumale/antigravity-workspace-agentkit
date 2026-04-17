@@ -7,13 +7,15 @@ import { AppComponent } from './app.component';
 import { TicketDashboardComponent } from './components/ticket-dashboard/ticket-dashboard.component';
 import { TicketFormComponent } from './components/ticket-form/ticket-form.component';
 import { TicketSearchComponent } from './components/ticket-search/ticket-search.component';
+import { TicketFooterComponent } from './components/ticket-footer/ticket-footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TicketDashboardComponent,
     TicketFormComponent,
-    TicketSearchComponent
+    TicketSearchComponent,
+    TicketFooterComponent
   ],
   imports: [
     BrowserModule,

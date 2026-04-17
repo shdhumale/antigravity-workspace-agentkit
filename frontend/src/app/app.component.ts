@@ -29,11 +29,7 @@ import { Ticket } from './services/ticket.service';
       </main>
 
       <!-- Footer -->
-      <footer class="border-t border-white/5 py-8 mt-12">
-        <div class="max-w-7xl mx-auto px-4 text-center text-slate-500 text-sm">
-          &copy; 2026 TicketHub Systems. All rights reserved. Built with Antigravity.
-        </div>
-      </footer>
+      <app-ticket-footer></app-ticket-footer>
     </div>
   `
 })
