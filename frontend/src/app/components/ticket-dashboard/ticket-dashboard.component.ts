@@ -51,6 +51,8 @@ import { TicketService } from '../../services/ticket.service';
           </tbody>
         </table>
       </div>
+      
+      <app-ticket-stats [tickets]="tickets"></app-ticket-stats>
     </div>
   `
 })

@@ -8,6 +8,7 @@ import { TicketDashboardComponent } from './components/ticket-dashboard/ticket-d
 import { TicketFormComponent } from './components/ticket-form/ticket-form.component';
 import { TicketSearchComponent } from './components/ticket-search/ticket-search.component';
 import { TicketFooterComponent } from './components/ticket-footer/ticket-footer.component';
+import { TicketStatsComponent } from './components/ticket-stats/ticket-stats.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { TicketFooterComponent } from './components/ticket-footer/ticket-footer.
     TicketDashboardComponent,
     TicketFormComponent,
     TicketSearchComponent,
-    TicketFooterComponent
+    TicketFooterComponent,
+    TicketStatsComponent
   ],
   imports: [
     BrowserModule,
