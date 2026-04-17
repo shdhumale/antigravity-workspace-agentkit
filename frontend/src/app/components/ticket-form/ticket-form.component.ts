@@ -1,11 +1,11 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Ticket, TicketService } from '../../services/ticket.service';
 
 @Component({
   selector: 'app-ticket-form',
   template: `
     <div class="glass-card p-6 w-full max-w-lg mx-auto">
-      <h2 class="text-xl font-bold text-white mb-6">Create New Ticket</h2>
+      <h2 class="text-xl font-bold text-white mb-6">{{ isEditing ? 'Edit Ticket' : 'Create New Ticket' }}</h2>
       <form (submit)="submit()" class="space-y-4">
         <div>
           <label class="block text-sm font-medium text-slate-400 mb-1">Ticket Name</label>
@@ -24,25 +24,53 @@ import { Ticket, TicketService } from '../../services/ticket.service';
             <option value="Escalate">Escalate</option>
           </select>
         </div>
-        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 active:transform active:scale-[0.98] transition-all text-white font-bold py-3 rounded-lg shadow-lg shadow-blue-500/20">
-          Save Ticket
-        </button>
+        <div class="flex gap-3">
+          <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-500 active:transform active:scale-[0.98] transition-all text-white font-bold py-3 rounded-lg shadow-lg shadow-blue-500/20">
+            {{ isEditing ? 'Update Ticket' : 'Save Ticket' }}
+          </button>
+          <button type="button" *ngIf="isEditing" (click)="cancel()" class="px-6 bg-white/10 hover:bg-white/20 text-white font-medium py-3 rounded-lg transition-colors">
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   `
 })
 export class TicketFormComponent {
+  @Input() ticket?: Ticket;
   @Output() onCreated = new EventEmitter<void>();
+  @Output() onCancel = new EventEmitter<void>();
   model: Ticket = { name: '', description: '', status: 'New' };
+
+  get isEditing(): boolean {
+    return !!this.ticket?.id;
+  }
 
   constructor(private ticketService: TicketService) {}
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['ticket'] && this.ticket) {
+      this.model = { ...this.ticket };
+    }
+  }
+
   submit(): void {
     if (this.model.name) {
-      this.ticketService.createTicket(this.model).subscribe(() => {
-        this.onCreated.emit();
-        this.model = { name: '', description: '', status: 'New' };
-      });
+      if (this.isEditing) {
+        this.ticketService.updateTicket(this.ticket!.id!, this.model).subscribe(() => {
+          this.onCreated.emit();
+          this.model = { name: '', description: '', status: 'New' };
+        });
+      } else {
+        this.ticketService.createTicket(this.model).subscribe(() => {
+          this.onCreated.emit();
+          this.model = { name: '', description: '', status: 'New' };
+        });
+      }
     }
+  }
+
+  cancel(): void {
+    this.onCancel.emit();
   }
 }

@@ -36,4 +36,26 @@ public class TicketController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Ticket> updateTicket(@PathVariable Long id, @RequestBody Ticket ticketDetails) {
+        return ticketRepository.findById(id)
+                .map(ticket -> {
+                    ticket.setName(ticketDetails.getName());
+                    ticket.setDescription(ticketDetails.getDescription());
+                    ticket.setStatus(ticketDetails.getStatus());
+                    return ResponseEntity.ok(ticketRepository.save(ticket));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteTicket(@PathVariable Long id) {
+        return ticketRepository.findById(id)
+                .map(ticket -> {
+                    ticketRepository.delete(ticket);
+                    return ResponseEntity.ok().build();
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

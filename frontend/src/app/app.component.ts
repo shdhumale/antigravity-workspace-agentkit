@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { TicketDashboardComponent } from './components/ticket-dashboard/ticket-dashboard.component';
+import { Ticket } from './services/ticket.service';
 
 @Component({
   selector: 'app-root',
@@ -23,8 +24,8 @@ import { TicketDashboardComponent } from './components/ticket-dashboard/ticket-d
 
       <!-- Content -->
       <main class="flex-1 max-w-7xl w-full mx-auto p-4 py-8">
-        <app-ticket-dashboard *ngIf="view === 'dashboard'" #dashboard></app-ticket-dashboard>
-        <app-ticket-form *ngIf="view === 'create'" (onCreated)="onTicketCreated()"></app-ticket-form>
+        <app-ticket-dashboard *ngIf="view === 'dashboard'" #dashboard (onEdit)="handleEdit($event)"></app-ticket-dashboard>
+        <app-ticket-form *ngIf="view === 'create'" [ticket]="editingTicket" (onCreated)="onTicketCreated()" (onCancel)="onCancelEdit()"></app-ticket-form>
       </main>
 
       <!-- Footer -->
@@ -38,9 +39,22 @@ import { TicketDashboardComponent } from './components/ticket-dashboard/ticket-d
 })
 export class AppComponent {
   view: 'dashboard' | 'create' = 'dashboard';
+  editingTicket?: Ticket;
   @ViewChild('dashboard') dashboard?: TicketDashboardComponent;
+
+  handleEdit(ticket: Ticket): void {
+    this.editingTicket = ticket;
+    this.view = 'create';
+  }
 
   onTicketCreated(): void {
     this.view = 'dashboard';
+    this.editingTicket = undefined;
+    this.dashboard?.refresh();
+  }
+
+  onCancelEdit(): void {
+    this.view = 'dashboard';
+    this.editingTicket = undefined;
   }
 }
